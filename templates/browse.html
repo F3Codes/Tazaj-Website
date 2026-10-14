@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Browse{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/browse.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="browse-page">
+
+    <!-- ==================== FILTERS SIDEBAR ==================== -->
+    <aside class="filters" id="filters">
+        <div class="filters-header">
+            <h2>Filters</h2>
+            <button class="filters-clear" type="button">Clear all</button>
+        </div>
+
+        <!-- Search -->
+        <div class="filter-group">
+            <h3>Search</h3>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search food or shop" class="search-input">
+            </div>
+        </div>
+
+        <!-- Category -->
+        <div class="filter-group">
+            <h3>Category</h3>
+            <label class="filter-option">
+                <input type="checkbox">
+                Bakery
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Restaurant Meals
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Groceries
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Produce
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Dairy
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Beverages
+            </label>
+        </div>
+
+        <!-- Price -->
+        <div class="filter-group">
+            <h3>Price (AED)</h3>
+            <div class="price-inputs">
+                <input type="number" placeholder="Min" min="0">
+                <span>–</span>
+                <input type="number" placeholder="Max" min="0">
+            </div>
+        </div>
+
+        <!-- Distance -->
+        <div class="filter-group">
+            <h3>Distance</h3>
+            <input type="range" class="range-slider" min="1" max="20" value="5">
+            <div class="range-labels">
+                <span>1 km</span>
+                <span>Within 5 km</span>
+                <span>20 km</span>
+            </div>
+        </div>
+
+        <!-- Pickup time -->
+        <div class="filter-group">
+            <h3>Pickup Time</h3>
+            <label class="filter-option">
+                <input type="radio" name="pickup">
+                Anytime
+            </label>
+            <label class="filter-option">
+                <input type="radio" name="pickup">
+                Today
+            </label>
+            <label class="filter-option">
+                <input type="radio" name="pickup">
+                Tomorrow
+            </label>
+            <label class="filter-option">
+                <input type="radio" name="pickup">
+                This week
+            </label>
+        </div>
+
+        <!-- Dietary -->
+        <div class="filter-group">
+            <h3>Dietary</h3>
+            <label class="filter-option">
+                <input type="checkbox">
+                Vegetarian
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Vegan
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Halal
+            </label>
+            <label class="filter-option">
+                <input type="checkbox">
+                Gluten-free
+            </label>
+        </div>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="browse-main">
+
+        <button class="mobile-filter-toggle" type="button" onclick="document.getElementById('filters').classList.toggle('open')">
+            <span>🔍 Filters</span>
+            <span>▾</span>
+        </button>
+
+        <div class="browse-topbar">
+            <div class="results-count">
+                Showing <strong>{{ foods|length }}</strong> deal{{ foods|length|pluralize }} near you
+            </div>
+            <div class="browse-sort">
+                <label for="sort">Sort by:</label>
+                <select id="sort">
+                    <option>Recommended</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Discount %</option>
+                    <option>Distance</option>
+                    <option>Pickup time</option>
+                </select>
+            </div>
+        </div>
+
+        {% if foods %}
+            <div class="product-grid">
+                {% for food in foods %}
+                    <div class="product-card">
+                        <div class="product-image {% cycle 'img-amber' 'img-blue' '' 'img-rose' 'img-violet' 'img-orange' %}">
+                            {% if food.image %}
+                                <img src="{{ food.image.url }}" alt="{{ food.title }}">
+                            {% else %}
+                                {{ food.emoji }}
+                            {% endif %}
+                            <span class="discount-badge">-{{ food.discount_percent }}%</span>
+                        </div>
+                        <div class="product-body">
+                            <div class="product-shop">{{ food.shop.name }}</div>
+                            <div class="product-title">{{ food.title }}</div>
+                            <div class="product-meta">
+                                <span>{{ food.shop.cuisine }}</span>
+                                <span class="dot"></span>
+                                <span>⭐ {{ food.shop.rating }}</span>
+                            </div>
+                            <div class="product-pickup">
+                                🕒 Pickup {{ food.pickup_start|date:"g:i A" }} – {{ food.pickup_end|date:"g:i A" }}
+                            </div>
+                            <div class="product-footer">
+                                <div class="product-prices">
+                                    <span class="price-new">AED {{ food.discounted_price|floatformat:2 }}</span>
+                                    <span class="price-old">AED {{ food.original_price|floatformat:2 }}</span>
+                                </div>
+                                <button class="add-btn">Reserve</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="emoji">🍽️</div>
+                <h3>No listings yet</h3>
+                <p>Check back soon — new surplus food is added throughout the day.</p>
+            </div>
+        {% endif %}
+
+    </main>
+</div>
+{% endblock %}

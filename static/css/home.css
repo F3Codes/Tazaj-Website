@@ -1,0 +1,397 @@
+/* ============================================================
+   ASTRA — Home Page Styles
+   ============================================================ */
+
+/* ---------- HERO ---------- */
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 1.5rem 6rem;
+    background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(22, 163, 74, 0.12), transparent 70%);
+    border-radius: 50%;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.1), transparent 70%);
+    border-radius: 50%;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    background: white;
+    border: 1px solid var(--primary-light);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.hero h1 {
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+}
+
+.hero h1 .highlight {
+    background: linear-gradient(120deg, var(--primary) 0%, #22c55e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero p {
+    font-size: 1.15rem;
+    color: var(--gray);
+    margin-bottom: 2rem;
+    max-width: 520px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+    font-weight: 500;
+}
+
+/* ---------- HERO VISUAL ---------- */
+.hero-visual {
+    position: relative;
+    height: 480px;
+}
+
+.food-card {
+    position: absolute;
+    background: white;
+    border-radius: 20px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    animation: float 6s ease-in-out infinite;
+}
+
+.food-card:nth-child(1) {
+    top: 20px;
+    left: 0;
+    width: 320px;
+    animation-delay: 0s;
+}
+
+.food-card:nth-child(2) {
+    top: 180px;
+    right: 0;
+    width: 300px;
+    animation-delay: 1.5s;
+}
+
+.food-card:nth-child(3) {
+    bottom: 20px;
+    left: 40px;
+    width: 300px;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.food-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.img-1 { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.img-2 { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.img-3 { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+
+.food-info h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+}
+
+.food-info .shop {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+}
+
+.price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.price-new {
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 1rem;
+}
+
+.price-old {
+    font-size: 0.85rem;
+    color: var(--gray);
+    text-decoration: line-through;
+}
+
+.discount-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: var(--accent);
+    color: white;
+    padding: 0.15rem 0.4rem;
+    border-radius: 6px;
+}
+
+/* ---------- HOW IT WORKS ---------- */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.step-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius);
+    padding: 2rem 1.5rem;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.step-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.step-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.step-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--primary-light);
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.step-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.step-card p {
+    color: var(--gray);
+    font-size: 0.95rem;
+}
+
+/* ---------- FEATURES ---------- */
+.features-section {
+    background: var(--light-gray);
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.feature-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), #22c55e);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+}
+
+.feature-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+    color: var(--gray);
+    font-size: 0.95rem;
+}
+
+/* ---------- CTA ---------- */
+.cta-section {
+    padding: 0 1.5rem 5rem;
+}
+
+.cta-box {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 24px;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-box::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(22, 163, 74, 0.35), transparent 70%);
+    border-radius: 50%;
+}
+
+.cta-box > * {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-box h2 {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+}
+
+.cta-box p {
+    color: #cbd5e1;
+    font-size: 1.1rem;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+}
+
+.cta-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ---------- RESPONSIVE (home-specific) ---------- */
+@media (max-width: 900px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-actions,
+    .hero-stats {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        height: 400px;
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-stats {
+        gap: 1.5rem;
+    }
+
+    .food-card {
+        width: 260px !important;
+    }
+}

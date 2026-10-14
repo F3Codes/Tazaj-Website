@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <!-- ==================== HERO ==================== -->
+    <header class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    Now live in the UAE
+                </div>
+                <h1>
+                    Rescue great food.<br>
+                    <span class="highlight">Save up to 70%.</span>
+                </h1>
+                <p>
+                    Tazaj connects you with local restaurants, bakeries, and grocery stores
+                    to rescue surplus food that would otherwise go to waste — at a fraction
+                    of the price.
+                </p>
+                <div class="hero-actions">
+                    <a href="{% url 'browse' %}" class="btn btn-primary btn-large">
+                        Browse nearby food →
+                    </a>
+                    <a href="#" class="btn btn-outline btn-large">
+                        List your business
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div>
+                        <div class="stat-value">12,400+</div>
+                        <div class="stat-label">Meals rescued</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">320+</div>
+                        <div class="stat-label">Partner stores</div>
+                    </div>
+                    <div>
+                        <div class="stat-value">68%</div>
+                        <div class="stat-label">Average savings</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="food-card">
+                    <div class="food-img img-1">🥐</div>
+                    <div class="food-info">
+                        <h4>Pastry Box</h4>
+                        <div class="shop">Sunrise Bakery · 0.4 km</div>
+                        <div class="price-row">
+                            <span class="price-new">AED 15</span>
+                            <span class="price-old">AED 45</span>
+                            <span class="discount-tag">-67%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card">
+                    <div class="food-img img-2">🍱</div>
+                    <div class="food-info">
+                        <h4>Sushi Platter</h4>
+                        <div class="shop">Sakura Kitchen · 0.9 km</div>
+                        <div class="price-row">
+                            <span class="price-new">AED 24</span>
+                            <span class="price-old">AED 66</span>
+                            <span class="discount-tag">-64%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="food-card">
+                    <div class="food-img img-3">🥗</div>
+                    <div class="food-info">
+                        <h4>Fresh Salad Bowl</h4>
+                        <div class="shop">Green Fork · 1.2 km</div>
+                        <div class="price-row">
+                            <span class="price-new">AED 16</span>
+                            <span class="price-old">AED 42</span>
+                            <span class="discount-tag">-63%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HOW IT WORKS ==================== -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2>How Tazaj works</h2>
+                <p>Three simple steps between surplus food and your plate.</p>
+            </div>
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">STEP 01</div>
+                    <div class="step-icon">🔍</div>
+                    <h3>Discover nearby deals</h3>
+                    <p>Browse surplus food from local businesses around you — updated in real time.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">STEP 02</div>
+                    <div class="step-icon">🛒</div>
+                    <h3>Reserve in seconds</h3>
+                    <p>Pick your items, pay securely, and get a pickup code instantly.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">STEP 03</div>
+                    <div class="step-icon">🎉</div>
+                    <h3>Pick up & enjoy</h3>
+                    <p>Swing by during the pickup window, show your code, and enjoy great food for less.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURES ==================== -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Good for you. Better for the planet.</h2>
+                <p>Every rescued meal keeps food out of landfills and money in your pocket.</p>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">💸</div>
+                    <h3>Massive savings</h3>
+                    <p>Get restaurant-quality meals, fresh produce, and baked goods for up to 70% off.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Fight food waste</h3>
+                    <p>Roughly one-third of all food produced is wasted. Every order helps change that.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Local first</h3>
+                    <p>Support the cafés, bakeries, and grocers in your neighborhood — not big chains.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-time listings</h3>
+                    <p>Businesses post surplus as it becomes available, so you always see fresh deals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure payments</h3>
+                    <p>Pay in-app with confidence. Pickup codes keep every order safe and simple.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❤️</div>
+                    <h3>Community impact</h3>
+                    <p>Track your personal impact — meals saved, CO₂ avoided, and money kept.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CTA ==================== -->
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2>Ready to rescue your first meal?</h2>
+            <p>Join thousands of people saving food, money, and the planet — one order at a time.</p>
+            <div class="cta-actions">
+                <a href="#" class="btn btn-primary btn-large">Get started free</a>
+                <a href="#" class="btn btn-white btn-large">Partner with us</a>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Create your account</h1>
+            <p>Start rescuing surplus food in seconds</p>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="non-field-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    {{ form.username.errors }}
+                {% endif %}
+                <span class="helptext">
+                    Letters, digits and @/./+/-/_ only. 150 characters max.
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    {{ form.password1.errors }}
+                {% endif %}
+                <span class="helptext">
+                    At least 8 characters. Can't be entirely numeric.
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Confirm password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    {{ form.password2.errors }}
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+                Create account
+            </button>
+        </form>
+
+        <div class="auth-switch">
+            Already have an account? <a href="{% url 'login' %}">Log in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

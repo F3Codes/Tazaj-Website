@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home{% endblock %} - Tazaj</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Global styles: tokens, navbar, footer, buttons -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    <!-- Per-page styles -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <span class="logo-mark">ط</span>
+                Tazaj
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'browse' %}">Browse Food</a>
+                <a href="#">For Businesses</a>
+                <a href="#">How It Works</a>
+                <a href="#">About</a>
+            </div>
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                    <span class="nav-user">Hi, {{ user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-ghost">Log out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-ghost">Log in</a>
+                    <a href="{% url 'signup' %}" class="btn btn-primary">Sign up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== PAGE CONTENT ==================== -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="logo-mark">✦</span>
+                    Tazaj
+                </div>
+                <p>Rescuing surplus food from local businesses and delivering it to your table at a fraction of the price.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <a href="{% url 'browse' %}">Browse</a>
+                <a href="#">How it works</a>
+                <a href="#">Pricing</a>
+            </div>
+            <div class="footer-col">
+                <h4>Business</h4>
+                <a href="#">List your store</a>
+                <a href="#">Partner portal</a>
+                <a href="#">Success stories</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About us</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Tazaj. All rights reserved.</span>
+            <span>Made for a zero-waste future 🌍</span>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

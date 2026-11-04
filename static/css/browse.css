@@ -510,3 +510,11 @@
         font-size: 0.75rem;
     }
 }
+
+.filter-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}

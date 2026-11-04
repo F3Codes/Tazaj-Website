@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.db.models import Sum, Count
+from django.db.models import Sum, Q
 from django.db import transaction
 from django.contrib.auth import login
 from django.contrib import messages
@@ -55,13 +55,62 @@ def signup(request):
     return render(request, "signup.html", {"form": form})
 
 def browse(request):
-    foods = (
-        Food.objects
-        .filter(is_active=True, shop__is_active=True)
-        .select_related('shop')
-        .order_by('pickup_end')
-    )
-    return render(request, 'browse.html', {'foods': foods})
+    foods = Food.objects.filter(is_active=True, shop__is_active=True).select_related('shop')
+
+    # 1. Search Query
+    query = request.GET.get('search', '').strip()
+    if query:
+        foods = foods.filter(
+            Q(title__icontains=query) | Q(shop__name__icontains=query)
+        )
+
+    # 2. Category (Shop Cuisine)
+    category = request.GET.get('category', '').strip()
+    if category:
+        foods = foods.filter(shop__cuisine__icontains=category)
+
+    # 3. Price Range
+    min_price = request.GET.get('min_price', '').strip()
+    max_price = request.GET.get('max_price', '').strip()
+    
+    if min_price:
+        try:
+            foods = foods.filter(discounted_price__gte=float(min_price))
+        except ValueError:
+            pass
+            
+    if max_price:
+        try:
+            foods = foods.filter(discounted_price__lte=float(max_price))
+        except ValueError:
+            pass
+
+    # 4. Sorting
+    sort = request.GET.get('sort', '')
+    if sort == 'price_low':
+        foods = foods.order_by('discounted_price')
+    elif sort == 'price_high':
+        foods = foods.order_by('-discounted_price')
+    elif sort == 'discount':
+        # Order by highest discount percentage
+        from django.db.models import F
+        foods = foods.annotate(
+            discount_amount=F('original_price') - F('discounted_price')
+        ).order_by('-discount_amount')
+    else:
+        # Default: Expiring soonest
+        foods = foods.order_by('pickup_end')
+
+    # Get unique cuisines for the sidebar (optional: we'll hardcode them in HTML for now)
+    context = {
+        'foods': foods,
+        'query': query,
+        'category': category,
+        'min_price': min_price,
+        'max_price': max_price,
+        'sort': sort,
+    }
+    return render(request, 'browse.html', context)
 
 @login_required
 def dashboard(request):

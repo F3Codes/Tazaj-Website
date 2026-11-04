@@ -12,105 +12,67 @@
 
     <!-- ==================== FILTERS SIDEBAR ==================== -->
     <aside class="filters" id="filters">
-        <div class="filters-header">
-            <h2>Filters</h2>
-            <button class="filters-clear" type="button">Clear all</button>
-        </div>
-
-        <div class="filter-group">
-            <h3>Search</h3>
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" placeholder="Search food or shop..." class="search-input">
+        <form method="get" action="{% url 'browse' %}">
+            <div class="filters-header">
+                <h2>Filters</h2>
+                <a href="{% url 'browse' %}" class="filters-clear">Clear all</a>
             </div>
-        </div>
 
-        <div class="filter-group">
-            <h3>Category</h3>
-            <label class="filter-option">
-                <input type="checkbox">
-                Bakery
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Restaurant Meals
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Groceries
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Produce
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Dairy
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Beverages
-            </label>
-        </div>
-
-        <div class="filter-group">
-            <h3>Price (AED)</h3>
-            <div class="price-inputs">
-                <input type="number" placeholder="Min" min="0">
-                <span>–</span>
-                <input type="number" placeholder="Max" min="0">
+            <!-- Search -->
+            <div class="filter-group">
+                <h3>Search</h3>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" name="search" value="{{ query }}" placeholder="Search food or shop..." class="search-input">
+                </div>
             </div>
-        </div>
 
-        <div class="filter-group">
-            <h3>Distance</h3>
-            <input type="range" class="range-slider" min="1" max="20" value="5">
-            <div class="range-labels">
-                <span>1 km</span>
-                <span>Within 5 km</span>
-                <span>20 km</span>
+            <!-- Category -->
+            <div class="filter-group">
+                <h3>Category</h3>
+                <label class="filter-option">
+                    <input type="radio" name="category" value="Bakery" {% if category == 'Bakery' %}checked{% endif %}>
+                    Bakery
+                </label>
+                <label class="filter-option">
+                    <input type="radio" name="category" value="Restaurant" {% if category == 'Restaurant' %}checked{% endif %}>
+                    Restaurant Meals
+                </label>
+                <label class="filter-option">
+                    <input type="radio" name="category" value="Cafe" {% if category == 'Cafe' %}checked{% endif %}>
+                    Cafe
+                </label>
+                <label class="filter-option">
+                    <input type="radio" name="category" value="Pizzeria" {% if category == 'Pizzeria' %}checked{% endif %}>
+                    Pizzeria
+                </label>
             </div>
-        </div>
 
-        <div class="filter-group">
-            <h3>Pickup Time</h3>
-            <label class="filter-option">
-                <input type="radio" name="pickup">
-                Anytime
-            </label>
-            <label class="filter-option">
-                <input type="radio" name="pickup">
-                Today
-            </label>
-            <label class="filter-option">
-                <input type="radio" name="pickup">
-                Tomorrow
-            </label>
-            <label class="filter-option">
-                <input type="radio" name="pickup">
-                This week
-            </label>
-        </div>
+            <!-- Price (AED) -->
+            <div class="filter-group">
+                <h3>Price (AED)</h3>
+                <div class="price-inputs">
+                    <input type="number" name="min_price" value="{{ min_price }}" placeholder="Min" min="0">
+                    <span>–</span>
+                    <input type="number" name="max_price" value="{{ max_price }}" placeholder="Max" min="0">
+                </div>
+            </div>
 
-        <div class="filter-group">
-            <h3>Dietary</h3>
-            <label class="filter-option">
-                <input type="checkbox">
-                Vegetarian
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Vegan
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Halal
-            </label>
-            <label class="filter-option">
-                <input type="checkbox">
-                Gluten-free
-            </label>
-        </div>
+            <!-- Distance (Placeholder for future) -->
+            <div class="filter-group">
+                <h3>Distance</h3>
+                <input type="range" class="range-slider" min="1" max="20" value="5" disabled>
+                <div class="range-labels">
+                    <span>1 km</span>
+                    <span>Within 5 km</span>
+                    <span>20 km</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" style="margin-top: 1rem;">
+                Apply Filters
+            </button>
+        </form>
     </aside>
 
     <!-- ==================== MAIN CONTENT ==================== -->
@@ -127,14 +89,15 @@
             </div>
             <div class="browse-sort">
                 <label for="sort">Sort by:</label>
-                <select id="sort">
-                    <option>Recommended</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Discount %</option>
-                    <option>Distance</option>
-                    <option>Pickup time</option>
-                </select>
+                <div class="browse-sort">
+                    <label for="sort">Sort by:</label>
+                    <select id="sort" onchange="window.location.href = '?sort=' + this.value + '&search={{ query }}&category={{ category }}&min_price={{ min_price }}&max_price={{ max_price }}';">
+                        <option value="" {% if not sort %}selected{% endif %}>Recommended</option>
+                        <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="discount" {% if sort == 'discount' %}selected{% endif %}>Biggest Discount</option>
+                    </select>
+                </div>
             </div>
         </div>
 

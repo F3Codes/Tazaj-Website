@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Order confirmed{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/food_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detail-page">
+    <div class="success-card">
+        <div class="success-icon">✅</div>
+        <h1>Order confirmed</h1>
+
+        {% if order.fulfillment == "delivery" %}
+            <p>
+                Your order is on the way with <strong>{{ order.courier_name }}</strong>.
+                Estimated arrival by <strong>{{ order.eta|date:"g:i A" }}</strong>.
+            </p>
+        {% else %}
+            <p>
+                Ready for pickup at <strong>{{ order.food.shop.name }}</strong>
+                by <strong>{{ order.eta|date:"M j, g:i A" }}</strong>.
+            </p>
+        {% endif %}
+
+        <div class="success-details">
+            <div class="summary-line">
+                <span>Item</span>
+                <span>{{ order.food.title }}</span>
+            </div>
+            <div class="summary-line">
+                <span>Quantity</span>
+                <span>{{ order.quantity }}</span>
+            </div>
+            <div class="summary-line">
+                <span>Fulfillment</span>
+                <span>{{ order.get_fulfillment_display }}</span>
+            </div>
+            {% if order.fulfillment == "delivery" %}
+                <div class="summary-line">
+                    <span>Courier</span>
+                    <span>{{ order.courier_name }}</span>
+                </div>
+                <div class="summary-line">
+                    <span>Delivery address</span>
+                    <span>{{ order.delivery_address }}</span>
+                </div>
+                <div class="summary-line">
+                    <span>Estimated arrival</span>
+                    <span>{{ order.eta|date:"g:i A" }}</span>
+                </div>
+            {% else %}
+                <div class="summary-line">
+                    <span>Pickup from</span>
+                    <span>{{ order.food.shop.address|default:order.food.shop.name }}</span>
+                </div>
+            {% endif %}
+            <div class="summary-line total">
+                <span>Total</span>
+                <span>AED {{ order.total|floatformat:2 }}</span>
+            </div>
+        </div>
+
+        <div class="success-actions">
+            <a href="{% url 'my_orders' %}" class="btn btn-primary">View my orders</a>
+            <a href="{% url 'browse' %}" class="btn btn-ghost">Keep browsing</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

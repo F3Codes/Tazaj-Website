@@ -17,16 +17,14 @@
             <button class="filters-clear" type="button">Clear all</button>
         </div>
 
-        <!-- Search -->
         <div class="filter-group">
             <h3>Search</h3>
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" placeholder="Search food or shop" class="search-input">
+                <input type="text" placeholder="Search food or shop..." class="search-input">
             </div>
         </div>
 
-        <!-- Category -->
         <div class="filter-group">
             <h3>Category</h3>
             <label class="filter-option">
@@ -55,7 +53,6 @@
             </label>
         </div>
 
-        <!-- Price -->
         <div class="filter-group">
             <h3>Price (AED)</h3>
             <div class="price-inputs">
@@ -65,7 +62,6 @@
             </div>
         </div>
 
-        <!-- Distance -->
         <div class="filter-group">
             <h3>Distance</h3>
             <input type="range" class="range-slider" min="1" max="20" value="5">
@@ -76,7 +72,6 @@
             </div>
         </div>
 
-        <!-- Pickup time -->
         <div class="filter-group">
             <h3>Pickup Time</h3>
             <label class="filter-option">
@@ -97,7 +92,6 @@
             </label>
         </div>
 
-        <!-- Dietary -->
         <div class="filter-group">
             <h3>Dietary</h3>
             <label class="filter-option">
@@ -148,6 +142,8 @@
             <div class="product-grid">
                 {% for food in foods %}
                     <div class="product-card">
+                        <a href="{% url 'food_detail' food.pk %}" class="card-overlay-link" aria-label="View {{ food.title }}"></a>
+
                         <div class="product-image {% cycle 'img-amber' 'img-blue' '' 'img-rose' 'img-violet' 'img-orange' %}">
                             {% if food.image %}
                                 <img src="{{ food.image.url }}" alt="{{ food.title }}">
@@ -156,6 +152,7 @@
                             {% endif %}
                             <span class="discount-badge">-{{ food.discount_percent }}%</span>
                         </div>
+
                         <div class="product-body">
                             <div class="product-shop">{{ food.shop.name }}</div>
                             <div class="product-title">{{ food.title }}</div>
@@ -172,7 +169,7 @@
                                     <span class="price-new">AED {{ food.discounted_price|floatformat:2 }}</span>
                                     <span class="price-old">AED {{ food.original_price|floatformat:2 }}</span>
                                 </div>
-                                <button class="add-btn">Reserve</button>
+                                <a href="{% url 'checkout' food.pk %}" class="add-btn">Order</a>
                             </div>
                         </div>
                     </div>

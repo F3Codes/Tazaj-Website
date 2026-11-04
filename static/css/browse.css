@@ -1,5 +1,5 @@
 /* ============================================================
-   TAZAJ — Browse Page
+   Tazaj — Browse Page
    ============================================================ */
 
 .browse-page {
@@ -102,7 +102,7 @@
     color: #94a3b8;
 }
 
-/* ---------- SEARCH BOX ---------- */
+/* Search box */
 .search-box {
     position: relative;
     display: flex;
@@ -240,6 +240,7 @@
 }
 
 .product-card {
+    position: relative;
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: var(--radius);
@@ -247,13 +248,20 @@
     display: flex;
     flex-direction: column;
     transition: all 0.25s ease;
-    cursor: pointer;
 }
 
 .product-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
     border-color: var(--primary-light);
+}
+
+/* Full-card overlay link */
+.card-overlay-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    text-decoration: none;
 }
 
 /* Image area */
@@ -264,6 +272,7 @@
     place-items: center;
     font-size: 3.5rem;
     background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    overflow: hidden;
 }
 
 .product-image img {
@@ -272,7 +281,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 0;
 }
 
 .product-image.img-amber {
@@ -306,6 +314,7 @@
     padding: 0.3rem 0.6rem;
     border-radius: 8px;
     letter-spacing: 0.3px;
+    z-index: 2;
 }
 
 /* Body */
@@ -390,7 +399,10 @@
     text-decoration: line-through;
 }
 
+/* Reserve button sits above the overlay */
 .add-btn {
+    position: relative;
+    z-index: 2;
     padding: 0.5rem 0.9rem;
     border-radius: 8px;
     background: var(--primary);
@@ -402,6 +414,7 @@
     transition: all 0.2s;
     font-family: inherit;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .add-btn:hover {

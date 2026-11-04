@@ -21,26 +21,52 @@
             </div>
         {% endif %}
 
-        <form method="post" novalidate>
+        <form method="post" novalidate id="signup-form">
             {% csrf_token %}
+
+            <div class="role-switch">
+                {% for radio in form.role %}
+                    <label class="role-option">
+                        {{ radio.tag }}
+                        <span class="role-option-body">
+                            <span class="role-option-title">
+                                {% if radio.data.value == 'customer' %}
+                                    🍽️ Customer
+                                {% else %}
+                                    🏪 Business
+                                {% endif %}
+                            </span>
+                            <span class="role-option-desc">
+                                {% if radio.data.value == 'customer' %}
+                                    Buy discounted surplus food
+                                {% else %}
+                                    Sell surplus food from your shop
+                                {% endif %}
+                            </span>
+                        </span>
+                    </label>
+                {% endfor %}
+            </div>
 
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}">Username</label>
                 {{ form.username }}
-                {% if form.username.errors %}
-                    {{ form.username.errors }}
-                {% endif %}
+                {% if form.username.errors %}{{ form.username.errors }}{% endif %}
                 <span class="helptext">
                     Letters, digits and @/./+/-/_ only. 150 characters max.
                 </span>
             </div>
 
             <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}{{ form.email.errors }}{% endif %}
+            </div>
+
+            <div class="form-group">
                 <label for="{{ form.password1.id_for_label }}">Password</label>
                 {{ form.password1 }}
-                {% if form.password1.errors %}
-                    {{ form.password1.errors }}
-                {% endif %}
+                {% if form.password1.errors %}{{ form.password1.errors }}{% endif %}
                 <span class="helptext">
                     At least 8 characters. Can't be entirely numeric.
                 </span>
@@ -49,9 +75,31 @@
             <div class="form-group">
                 <label for="{{ form.password2.id_for_label }}">Confirm password</label>
                 {{ form.password2 }}
-                {% if form.password2.errors %}
-                    {{ form.password2.errors }}
-                {% endif %}
+                {% if form.password2.errors %}{{ form.password2.errors }}{% endif %}
+            </div>
+
+            <div id="business-fields" class="business-fields" hidden>
+                <div class="business-fields-divider">
+                    <span>About your shop</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.shop_name.id_for_label }}">Shop name</label>
+                    {{ form.shop_name }}
+                    {% if form.shop_name.errors %}{{ form.shop_name.errors }}{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.shop_address.id_for_label }}">Shop address</label>
+                    {{ form.shop_address }}
+                    {% if form.shop_address.errors %}{{ form.shop_address.errors }}{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.shop_cuisine.id_for_label }}">Cuisine type</label>
+                    {{ form.shop_cuisine }}
+                    {% if form.shop_cuisine.errors %}{{ form.shop_cuisine.errors }}{% endif %}
+                </div>
             </div>
 
             <button type="submit" class="btn btn-primary btn-full">
@@ -64,4 +112,20 @@
         </div>
     </div>
 </div>
+
+<script>
+(function () {
+    const radios = document.querySelectorAll('input[name="role"]');
+    const bizFields = document.getElementById('business-fields');
+
+    function update() {
+        const chosen = document.querySelector('input[name="role"]:checked');
+        const isBusiness = chosen && chosen.value === 'business';
+        bizFields.hidden = !isBusiness;
+    }
+
+    radios.forEach((r) => r.addEventListener('change', update));
+    update();
+})();
+</script>
 {% endblock %}

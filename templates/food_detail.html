@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ food.title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/food_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detail-page">
+    <a href="{% url 'browse' %}" class="back-link">← Back to browse</a>
+
+    <div class="detail-grid">
+        <div class="detail-image">
+            {% if food.image %}
+                <img src="{{ food.image.url }}" alt="{{ food.title }}">
+            {% else %}
+                <span>{{ food.emoji }}</span>
+            {% endif %}
+            <span class="discount-badge">-{{ food.discount_percent }}%</span>
+        </div>
+
+        <div class="detail-info">
+            <div class="detail-shop">
+                {{ food.shop.emoji }} <strong>{{ food.shop.name }}</strong>
+                <span class="dot">·</span>
+                <span>{{ food.shop.cuisine }}</span>
+                <span class="dot">·</span>
+                <span>⭐ {{ food.shop.rating }}</span>
+            </div>
+
+            <h1>{{ food.title }}</h1>
+            <p class="detail-desc">{{ food.description|default:"Fresh surplus food, ready for rescue." }}</p>
+
+            <div class="detail-prices">
+                <span class="price-new">AED {{ food.discounted_price|floatformat:2 }}</span>
+                <span class="price-old">AED {{ food.original_price|floatformat:2 }}</span>
+                <span class="savings-tag">Save AED {{ food.savings|floatformat:2 }}</span>
+            </div>
+
+            <div class="detail-meta">
+                <div class="meta-row">
+                    <span class="meta-label">Quantity left</span>
+                    <span class="meta-value">{{ food.quantity }}</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Pickup window</span>
+                    <span class="meta-value">
+                        {{ food.pickup_start|date:"M j, g:i A" }} – {{ food.pickup_end|date:"M j, g:i A" }}
+                    </span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Shop address</span>
+                    <span class="meta-value">{{ food.shop.address|default:"—" }}</span>
+                </div>
+            </div>
+
+            {% if food.quantity > 0 %}
+                <a href="{% url 'checkout' food.pk %}" class="btn btn-primary btn-large btn-full">
+                    Order now
+                </a>
+            {% else %}
+                <div class="sold-out">Sold out</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout — {{ food.title }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/food_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detail-page">
+    <a href="{% url 'food_detail' food.pk %}" class="back-link">← Back to item</a>
+
+    <h1 class="checkout-title">Checkout</h1>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="checkout-grid">
+        <form method="post" class="checkout-form" id="checkout-form">
+            {% csrf_token %}
+
+            <div class="checkout-card">
+                <h2>How would you like to receive it?</h2>
+
+                <label class="choice-card">
+                    <input type="radio" name="fulfillment" value="pickup" checked>
+                    <div class="choice-body">
+                        <strong>🏪 Pickup — Free</strong>
+                        <span>
+                            Pick up from {{ food.shop.name }}
+                            {% if food.shop.address %} · {{ food.shop.address }}{% endif %}
+                        </span>
+                        <span class="choice-sub">
+                            Available {{ food.pickup_start|date:"M j, g:i A" }} – {{ food.pickup_end|date:"M j, g:i A" }}
+                        </span>
+                    </div>
+                </label>
+
+                <label class="choice-card">
+                    <input type="radio" name="fulfillment" value="delivery">
+                    <div class="choice-body">
+                        <strong>🚚 Delivery</strong>
+                        <span>Delivered by a partner courier. Fee depends on the courier.</span>
+                    </div>
+                </label>
+
+                <div id="delivery-fields" class="delivery-fields" hidden>
+                    <div class="form-group">
+                        <label for="courier">Courier</label>
+                        <select name="courier" id="courier">
+                            <option value="">— Choose a courier —</option>
+                            {% for c in couriers %}
+                                <option value="{{ c.name }}" data-fee="{{ c.base_fee }}">
+                                    {{ c.name }} — AED {{ c.base_fee|floatformat:2 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="delivery_address">Delivery address</label>
+                        <textarea name="delivery_address" id="delivery_address" rows="2"
+                                  placeholder="Building, street, area, city"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-card">
+                <h2>Quantity</h2>
+                <div class="qty-row">
+                    <input type="number" name="quantity" value="1" min="1" max="{{ food.quantity }}" class="qty-input" id="qty-input">
+                    <span class="qty-max">of {{ food.quantity }} available</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large btn-full">
+                Place order
+            </button>
+        </form>
+
+        <aside class="order-summary">
+            <h2>Summary</h2>
+            <div class="summary-item">
+                <div class="summary-thumb">
+                    {% if food.image %}
+                        <img src="{{ food.image.url }}" alt="{{ food.title }}">
+                    {% else %}
+                        {{ food.emoji }}
+                    {% endif %}
+                </div>
+                <div>
+                    <div class="summary-title">{{ food.title }}</div>
+                    <div class="summary-shop">{{ food.shop.name }}</div>
+                </div>
+            </div>
+
+            <div class="summary-line">
+                <span>Unit price</span>
+                <span>AED {{ food.discounted_price|floatformat:2 }}</span>
+            </div>
+            <div class="summary-line">
+                <span>Quantity</span>
+                <span id="summary-qty">1</span>
+            </div>
+            <div class="summary-line">
+                <span>Delivery fee</span>
+                <span id="summary-delivery">Free</span>
+            </div>
+            <div class="summary-line total">
+                <span>Total</span>
+                <span id="summary-total">AED {{ food.discounted_price|floatformat:2 }}</span>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+(function () {
+    const unitPrice = parseFloat("{{ food.discounted_price }}");
+    const radios = document.querySelectorAll('input[name="fulfillment"]');
+    const deliveryFields = document.getElementById('delivery-fields');
+    const courierSelect = document.getElementById('courier');
+    const qtyInput = document.getElementById('qty-input');
+    const sumQty = document.getElementById('summary-qty');
+    const sumDelivery = document.getElementById('summary-delivery');
+    const sumTotal = document.getElementById('summary-total');
+
+    function currentFulfillment() {
+        return document.querySelector('input[name="fulfillment"]:checked').value;
+    }
+
+    function currentDeliveryFee() {
+        if (currentFulfillment() !== 'delivery') return 0;
+        const opt = courierSelect.options[courierSelect.selectedIndex];
+        return parseFloat(opt?.dataset?.fee || 0);
+    }
+
+    function update() {
+        const isDelivery = currentFulfillment() === 'delivery';
+        deliveryFields.hidden = !isDelivery;
+
+        const qty = Math.max(1, parseInt(qtyInput.value || 1, 10));
+        const fee = currentDeliveryFee();
+        const total = unitPrice * qty + fee;
+
+        sumQty.textContent = qty;
+        sumDelivery.textContent = isDelivery && fee > 0 ? 'AED ' + fee.toFixed(2) : 'Free';
+        sumTotal.textContent = 'AED ' + total.toFixed(2);
+    }
+
+    radios.forEach(r => r.addEventListener('change', update));
+    courierSelect.addEventListener('change', update);
+    qtyInput.addEventListener('input', update);
+    update();
+})();
+</script>
+{% endblock %}

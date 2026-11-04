@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dash-page">
+
+    <div class="dash-header">
+        <div class="dash-title">
+            <h1>Dashboard</h1>
+            <p>Manage your listings and see how your surplus is doing.</p>
+            <div class="dash-shop-chip">
+                {{ shop.emoji }} {{ shop.name }}
+            </div>
+        </div>
+        <a href="{% url 'food_create' %}" class="btn btn-primary">
+            + New listing
+        </a>
+    </div>
+
+    <div class="dash-stats">
+        <div class="stat-card">
+            <div class="label">Total listings</div>
+            <div class="value">{{ stats.total }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Active now</div>
+            <div class="value accent">{{ stats.active }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Expired</div>
+            <div class="value">{{ stats.expired }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Orders</div>
+            <div class="value">{{ stats.orders_count }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Revenue (AED)</div>
+            <div class="value accent">{{ stats.orders_revenue|floatformat:0 }}</div>
+        </div>
+    </div>
+
+    <div class="dash-listings">
+        <div class="dash-listings-header">
+            <h2>Your listings</h2>
+        </div>
+
+        {% if foods %}
+            {% for food in foods %}
+                <div class="listing-row">
+                    <div class="listing-thumb">
+                        {% if food.image %}
+                            <img src="{{ food.image.url }}" alt="{{ food.title }}">
+                        {% else %}
+                            {{ food.emoji }}
+                        {% endif %}
+                    </div>
+
+                    <div class="listing-info">
+                        <h3>{{ food.title }}</h3>
+                        <div class="listing-meta">
+                            <span>AED {{ food.discounted_price|floatformat:2 }}</span>
+                            <span>·</span>
+                            <span>{{ food.quantity }} left</span>
+                            <span>·</span>
+                            <span>Until {{ food.pickup_end|date:"M j, g:i A" }}</span>
+                            <span>·</span>
+                            {% if not food.is_active %}
+                                <span class="status-inactive">Inactive</span>
+                            {% elif food.pickup_end < now %}
+                                <span class="status-expired">Expired</span>
+                            {% else %}
+                                <span class="status-active">Active</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="listing-actions">
+                        <a href="{% url 'food_edit' food.pk %}" class="btn btn-ghost btn-sm">Edit</a>
+                        <a href="{% url 'food_delete' food.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="dash-empty">
+                <div class="emoji">📦</div>
+                <h3>No listings yet</h3>
+                <p>Create your first surplus listing to get started.</p>
+                <a href="{% url 'food_create' %}" class="btn btn-primary btn-sm">+ New listing</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="dash-listings" style="margin-top: 1.5rem;">
+        <div class="dash-listings-header">
+            <h2>Recent orders</h2>
+        </div>
+
+        {% if orders %}
+            {% for o in orders %}
+                <div class="listing-row">
+                    <div class="listing-thumb">
+                        {% if o.food.image %}
+                            <img src="{{ o.food.image.url }}" alt="">
+                        {% else %}
+                            {{ o.food.emoji }}
+                        {% endif %}
+                    </div>
+
+                    <div class="listing-info">
+                        <h3>{{ o.food.title }}</h3>
+                        <div class="listing-meta">
+                            <span>{{ o.customer.username }}</span>
+                            <span>·</span>
+                            <span>Qty {{ o.quantity }}</span>
+                            <span>·</span>
+                            <span>{{ o.get_fulfillment_display }}</span>
+                            {% if o.fulfillment == "delivery" %}
+                                <span>·</span>
+                                <span>{{ o.courier_name }}</span>
+                            {% endif %}
+                            <span>·</span>
+                            <span>{{ o.created_at|date:"M j, g:i A" }}</span>
+                            <span>·</span>
+                            {% if o.effective_status == "delivered" %}
+                                <span class="status-active">
+                                    {% if o.fulfillment == "pickup" %}Picked up{% else %}Delivered{% endif %}
+                                </span>
+                            {% elif o.effective_status == "cancelled" %}
+                                <span class="status-expired">Cancelled</span>
+                            {% elif o.effective_status == "no_show" %}
+                                <span class="status-expired">No-show</span>
+                            {% else %}
+                                <span style="color: var(--accent); font-weight: 600;">
+                                    {% if o.fulfillment == "pickup" %}Awaiting pickup{% else %}On the way{% endif %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="order-total">
+                        AED {{ o.total|floatformat:2 }}
+
+                        {% if o.fulfillment == "pickup" and o.status == "pending" %}
+                            <form method="post" action="{% url 'order_mark_picked_up' o.pk %}" style="margin-top:0.4rem;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-sm">Mark picked up</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="dash-empty">
+                <div class="emoji">📭</div>
+                <h3>No orders yet</h3>
+                <p>Orders from customers will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

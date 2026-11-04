@@ -40,18 +40,17 @@
                 {% if form.description.errors %}{{ form.description.errors }}{% endif %}
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="{{ form.emoji.id_for_label }}">Emoji</label>
-                    {{ form.emoji }}
-                    {% if form.emoji.errors %}{{ form.emoji.errors }}{% endif %}
-                </div>
+            <div class="form-group">
+                <label for="{{ form.emoji.id_for_label }}">Emoji</label>
+                {{ form.emoji }}
+                {% if form.emoji.errors %}{{ form.emoji.errors }}{% endif %}
+                <span class="helptext">Shown if no image is uploaded.</span>
+            </div>
 
-                <div class="form-group">
-                    <label for="{{ form.image.id_for_label }}">Image</label>
-                    {{ form.image }}
-                    {% if form.image.errors %}{{ form.image.errors }}{% endif %}
-                </div>
+            <div class="form-group">
+                <label for="{{ form.image.id_for_label }}">Image</label>
+                {{ form.image }}
+                {% if form.image.errors %}{{ form.image.errors }}{% endif %}
             </div>
 
             <div class="form-row">

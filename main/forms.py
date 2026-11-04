@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from datetime import timedelta
+from django.utils import timezone
 from .models import User, Food
+from .widgets import PasteImageWidget
 
 
 class SignUpForm(UserCreationForm):
@@ -74,6 +77,13 @@ class FoodForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["pickup_start"].input_formats = ["%Y-%m-%dT%H:%M"]
         self.fields["pickup_end"].input_formats = ["%Y-%m-%dT%H:%M"]
+        self.fields["image"].widget = PasteImageWidget()
+
+        if not self.instance.pk:
+            now = timezone.localtime()
+            self.initial["pickup_start"] = now.strftime("%Y-%m-%dT%H:%M")
+            three_days = now + timedelta(days=3)
+            self.initial["pickup_end"] = three_days.strftime("%Y-%m-%dT%H:%M")
 
     def clean(self):
         cleaned = super().clean()

@@ -20,6 +20,15 @@ def _require_business(request):
 def home(request):
     return render(request, "home.html")
 
+def forbusinesses(request):
+    return render(request, "forbusinesses.html")
+
+def howitworks(request):
+    return render(request, "howitworks.html")
+
+def about(request):
+    return render(request, "about.html")
+
 def signup(request):
     if request.user.is_authenticated:
         return redirect("home")

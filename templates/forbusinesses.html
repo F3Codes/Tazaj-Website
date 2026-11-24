@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}For Businesses{% endblock %}
+
+{% block extra_css %}
+<style>
+    .biz-hero {
+        padding: 4.5rem 1.5rem 4rem;
+        background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+        text-align: center;
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.9rem;
+        background: var(--white);
+        border: 1px solid var(--primary-light);
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 1.25rem;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .biz-hero h1 {
+        font-size: clamp(2.1rem, 4.5vw, 3.25rem);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        max-width: 720px;
+        margin: 0 auto 1.25rem;
+    }
+
+    .biz-hero p {
+        color: var(--gray);
+        font-size: 1.1rem;
+        max-width: 560px;
+        margin: 0 auto 2rem;
+    }
+
+    .hero-btns {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .biz-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .biz-card {
+        background: var(--white);
+        border: 1px solid #e2e8f0;
+        border-radius: var(--radius);
+        padding: 2rem 1.5rem;
+        transition: all 0.25s;
+    }
+
+    .biz-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .biz-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--primary-light);
+        color: var(--primary-dark);
+        display: grid;
+        place-items: center;
+        font-size: 1.35rem;
+        margin-bottom: 1.15rem;
+    }
+
+    .biz-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.45rem;
+    }
+
+    .biz-card p {
+        color: var(--gray);
+        font-size: 0.95rem;
+    }
+
+    .alt-band {
+        background: var(--light-gray);
+    }
+
+    .steps-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .mini-step {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 1.75rem;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .mini-step span {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: var(--primary);
+    }
+
+    .mini-step h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0.4rem 0;
+    }
+
+    .mini-step p {
+        color: var(--gray);
+        font-size: 0.92rem;
+    }
+
+    .cta-wrap {
+        padding: 0 1.5rem 5rem;
+    }
+
+    .cta-panel {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-radius: 24px;
+        padding: 3.5rem 2rem;
+        text-align: center;
+        color: var(--white);
+    }
+
+    .cta-panel h2 {
+        font-size: clamp(1.65rem, 3.5vw, 2.35rem);
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 0.75rem;
+    }
+
+    .cta-panel p {
+        color: #cbd5e1;
+        max-width: 500px;
+        margin: 0 auto 1.75rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="biz-hero">
+    <div class="container">
+        <div class="pill">For Bakeries, Cafés, Restaurants &amp; Grocers</div>
+        <h1>Turn unsold food into revenue and new regulars.</h1>
+        <p>List surplus meals and groceries in minutes, reduce end-of-day waste, and welcome local customers right before closing.</p>
+        <div class="hero-btns">
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-large">Get started free →</a>
+            <a href="#workflow" class="btn btn-outline btn-large">See how it works</a>
+        </div>
+    </div>
+</header>
+
+<section>
+    <div class="container">
+        <div class="section-header">
+            <h2>Built for busy kitchens</h2>
+            <p>Simple daily listing tools with zero complex setup.</p>
+        </div>
+        <div class="biz-grid">
+            <div class="biz-card">
+                <div class="biz-icon">💸</div>
+                <h3>Recover extra revenue</h3>
+                <p>Earn money on fresh items that would otherwise be discarded at the end of a shift.</p>
+            </div>
+            <div class="biz-card">
+                <div class="biz-icon">📍</div>
+                <h3>Bring in local foot traffic</h3>
+                <p>Introduce your store to nearby food lovers who often come back at full price.</p>
+            </div>
+            <div class="biz-card">
+                <div class="biz-icon">⚡</div>
+                <h3>Quick daily updates</h3>
+                <p>Publish surplus bags in under a minute and set pickup windows that fit your hours.</p>
+            </div>
+            <div class="biz-card">
+                <div class="biz-icon">🌱</div>
+                <h3>Track your impact</h3>
+                <p>See meals saved and CO₂ avoided across your store's daily rescues.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="workflow" class="alt-band">
+    <div class="container">
+        <div class="section-header">
+            <h2>Partner workflow</h2>
+            <p>Three quick steps from surplus stock to pickup.</p>
+        </div>
+        <div class="steps-row">
+            <div class="mini-step">
+                <span>STEP 01</span>
+                <h3>Post surplus bags</h3>
+                <p>Enter how many bags are available, set the price, and choose a pickup window.</p>
+            </div>
+            <div class="mini-step">
+                <span>STEP 02</span>
+                <h3>Receive reservations</h3>
+                <p>Customers reserve and pay in advance so you know what to set aside.</p>
+            </div>
+            <div class="mini-step">
+                <span>STEP 03</span>
+                <h3>Hand over</h3>
+                <p>Customers show up when they arrive to collect their order.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-wrap">
+    <div class="cta-panel">
+        <h2>Ready to list your surplus on Tazaj?</h2>
+        <p>Join local stores across the UAE turning daily leftovers into community wins.</p>
+        <div class="hero-btns">
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-large">Create business account</a>
+            <a href="{% url 'browse' %}" class="btn btn-white btn-large">View live listings</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

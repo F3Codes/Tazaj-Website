@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        padding: 4.5rem 1.5rem 3.5rem;
+        background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+        text-align: center;
+    }
+
+    .about-hero h1 {
+        font-size: clamp(2.1rem, 4.5vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        max-width: 720px;
+        margin: 0 auto 1rem;
+    }
+
+    .about-hero p {
+        color: var(--gray);
+        font-size: 1.1rem;
+        max-width: 580px;
+        margin: 0 auto;
+    }
+
+    .stats-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        background: var(--primary-light);
+        border-radius: var(--radius);
+        padding: 2.25rem 1.5rem;
+        text-align: center;
+    }
+
+    .stat-num {
+        font-size: 1.9rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        color: var(--primary-dark);
+    }
+
+    .stat-txt {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin-top: 0.2rem;
+    }
+
+    .two-col {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 2.5rem;
+        align-items: start;
+    }
+
+    .two-col h2 {
+        font-size: 1.75rem;
+        font-weight: 800;
+        letter-spacing: -0.75px;
+        margin-bottom: 1rem;
+    }
+
+    .two-col p {
+        color: var(--gray);
+        margin-bottom: 1rem;
+    }
+
+    .pillars {
+        background: var(--light-gray);
+        border-radius: var(--radius);
+        padding: 2rem;
+        display: grid;
+        gap: 1.25rem;
+    }
+
+    .pillar strong {
+        display: block;
+        color: var(--dark);
+        margin-bottom: 0.2rem;
+    }
+
+    .pillar span {
+        color: var(--gray);
+        font-size: 0.92rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="about-hero">
+    <div class="container">
+        <h1>Good food belongs on plates, not in the bin.</h1>
+        <p>Tazaj helps local businesses and everyday shoppers cut food waste while saving money across the UAE.</p>
+    </div>
+</header>
+
+<section style="padding-bottom: 2rem;">
+    <div class="container">
+        <div class="stats-strip">
+            <div>
+                <div class="stat-num">12,400+</div>
+                <div class="stat-txt">Meals rescued</div>
+            </div>
+            <div>
+                <div class="stat-num">320+</div>
+                <div class="stat-txt">Partner stores</div>
+            </div>
+            <div>
+                <div class="stat-num">68%</div>
+                <div class="stat-txt">Average savings</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="two-col">
+            <div>
+                <h2>Why Tazaj exists</h2>
+                <p>Every day, bakeries, cafés, restaurants, and grocers end the day with fresh food they can't sell tomorrow. At the same time, people are looking for affordable, quality meals near home or work.</p>
+                <p>Tazaj bridges that gap—keeping good food in circulation, supporting neighborhood businesses, and making sustainable habits effortless.</p>
+                <a href="{% url 'browse' %}" class="btn btn-primary" style="margin-top: 0.5rem;">Browse nearby food →</a>
+            </div>
+            <div class="pillars">
+                <div class="pillar">
+                    <strong>🌱 Less waste, more value</strong>
+                    <span>Turning end-of-day surplus into affordable meals instead of landfill waste.</span>
+                </div>
+                <div class="pillar">
+                    <strong>📍 Local neighborhood focus</strong>
+                    <span>Highlighting independent kitchens, bakeries, and grocers near you.</span>
+                </div>
+                <div class="pillar">
+                    <strong>⚡ Simple by design</strong>
+                    <span>Fast browsing, quick reservations, and easy pickup codes.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

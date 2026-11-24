@@ -35,9 +35,9 @@
                 {% if user.is_authenticated and user.role == "business" %}
                     <a href="{% url 'dashboard' %}">Dashboard</a>
                 {% endif %}
-                <a href="#">For Businesses</a>
-                <a href="#">How It Works</a>
-                <a href="#">About</a>
+                <a href="{% url 'forbusinesses' %}">For Businesses</a>
+                <a href="{% url 'howitworks' %}">How It Works</a>
+                <a href="{% url 'about' %}">About</a>
             </div>
             <div class="nav-actions">
                 {% if user.is_authenticated %}

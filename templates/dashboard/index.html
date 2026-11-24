@@ -152,6 +152,13 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Mark picked up</button>
                             </form>
                         {% endif %}
+                        {% if o.can_business_cancel %}
+                            <form method="post" action="{% url 'order_business_cancel' o.pk %}" style="margin-top:0.4rem;"
+                                onsubmit="return confirm('Cancel order #{{ o.pk }} for {{ o.customer.username }}?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel order</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

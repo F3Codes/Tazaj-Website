@@ -197,5 +197,9 @@ class Order(models.Model):
         return False
 
     @property
+    def can_business_cancel(self):
+        return self.effective_status == self.PENDING
+
+    @property
     def cancel_deadline(self):
         return self.created_at + self.CANCEL_WINDOW

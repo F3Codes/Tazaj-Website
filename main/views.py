@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.core.exceptions import PermissionDenied
 from django.db.models import Sum, Q
 from django.db import transaction
@@ -55,7 +56,7 @@ def signup(request):
     return render(request, "signup.html", {"form": form})
 
 def browse(request):
-    foods = Food.objects.filter(is_active=True, shop__is_active=True).select_related('shop')
+    foods = Food.objects.filter(is_active=True, shop__is_active=True,pickup_end__gte=timezone.now()).select_related('shop')
 
     # 1. Search Query
     query = request.GET.get('search', '').strip()
@@ -241,7 +242,7 @@ def checkout(request, pk):
 
     if food.quantity < 1:
         messages.error(request, "This item is sold out.")
-        return redirect("browse")
+        return redirect("my_orders")
 
     if request.method == "POST":
         fulfillment = request.POST.get("fulfillment", Order.PICKUP)
@@ -328,6 +329,31 @@ def order_cancel(request, pk):
 
     messages.success(request, "Order cancelled and refunded.")
     return redirect("my_orders")
+
+@login_required
+@require_POST
+def order_business_cancel(request, pk):
+    _require_business(request)
+
+    order = get_object_or_404(
+        Order.objects.select_related("food", "food__shop"),
+        pk=pk,
+        food__shop__owner=request.user,
+    )
+
+    if not order.can_business_cancel:
+        messages.error(request, "This order can no longer be cancelled.")
+        return redirect("dashboard")
+
+    order.status = Order.CANCELLED
+    order.save(update_fields=["status"])
+
+    if order.food:
+        order.food.quantity += order.quantity
+        order.food.save(update_fields=["quantity"])
+
+    messages.success(request, f"Order #{order.pk} cancelled.")
+    return redirect("dashboard")
 
 @login_required
 def order_mark_picked_up(request, pk):

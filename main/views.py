@@ -56,7 +56,7 @@ def signup(request):
     return render(request, "signup.html", {"form": form})
 
 def browse(request):
-    foods = Food.objects.filter(is_active=True, shop__is_active=True,pickup_end__gte=timezone.now()).select_related('shop')
+    foods = Food.objects.filter(is_active=True, shop__is_active=True,pickup_end__gte=timezone.now(),quantity__gt=0).select_related('shop')
 
     # 1. Search Query
     query = request.GET.get('search', '').strip()
